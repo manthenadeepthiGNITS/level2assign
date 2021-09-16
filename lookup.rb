@@ -48,8 +48,8 @@ def resolve(d_records,lookup_chain,domain)
       end
   else
     if lookup_chain.length==1
-      #puts "no domain"
-      lookup_chain.push(" ")
+      dom_name=lookup_chain[0]
+      lookup_chain[0]="error :record not found for #{dom_name}"
       #lookup_chain.push(" ")
     else
       return
