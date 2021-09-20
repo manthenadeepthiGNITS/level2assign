@@ -7,43 +7,30 @@ class Todo
     @status=status
   end
   def overdue?
-    if(@due_date<Date.today)
-      #puts "in overdue? true"
-      return true
-    else
-     # puts "in overdue false"
-      return false
-    end
+    Date.today > @due_date
   end
   def due_today?
-    if(@due_date==Date.today)
-      #puts "in overdue? true"
-      return true
-    else
-     # puts "in overdue false"
-      return false
-    end
+    @due_date==Date.today
   end
   def due_later?
-    if(@due_date>Date.today)
-      #puts "in overdue? true"
-      return true
-    else
-     # puts "in overdue false"
-      return false
-    end
+    @due_date>Date.today
   end
 
   def to_displayable_string
-    if @due_date==Date.today
-      track_str="[  ]"+@work.to_s
-    else
-      track_str="[  ]"+@work.to_s+"\t"+@due_date.to_s
+    if @due_date.instance_of?(Date)
+      if @status==true
+        track_str="[*]"
+      elsif @status==false
+        track_str="[ ]"
+      else
+        track_str="invalid status"
+      end
+      if @due_date==Date.today
+        track_str=track_str+@work.to_s
+      else
+        track_str=track_str+@work.to_s+"\t"+@due_date.to_s
+      end
     end
-    #puts track_str
-    return track_str
-    #puts "in todo display"
-
   end
 end
 
@@ -56,28 +43,21 @@ class TodosList
   end
 
   def overdue
-    #puts "in overdue"
     TodosList.new(@todos.filter { |todo| todo.overdue? })
   end
   def due_today
-    #puts "in overdue"
     TodosList.new(@todos.filter { |todo| todo.due_today? })
   end
   def due_later
-    #puts "in overdue"
     TodosList.new(@todos.filter { |todo| todo.due_later? })
   end
 
 
   def to_displayable_list
-    #puts "in todos display"
-    displaylist=[]
-    @todos.each do |todo|
-        displaylist.push(todo.to_displayable_string)
+    displaylist=@todos.map{|todo|
+       todo.to_displayable_string}
     end
-      return displaylist
   end
-end
 
 date = Date.today
 todos = [
